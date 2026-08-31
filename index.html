@@ -195,17 +195,21 @@
     <div class="logo">OURFLIX</div>
     <ul class="nav-links">
       <li>Home</li>
+      <li>Our Story</li>
+      <li>Love Notes</li>
+      <li>Date Ideas</li>
+      <li>My List</li>
     </ul>
   </div>
   <div class="avatar" id="avatarInitial">B</div>
 </nav>
 
 <header class="hero">
-  <video id="heroVideo" src="videos/clip01.mp4" autoplay muted loop playsinline></video>
+  <video id="heroVideo" src="clip01.mp4" autoplay muted loop playsinline></video>
   <div class="hero-scrim"></div>
   <div class="hero-content">
     <div class="hero-badge"><span class="n">OURFLIX</span> ORIGINAL</div>
-    <h1 id="heroTitle">You being like a Mom</h1>
+    <h1 id="heroTitle">Us: The Story So Far</h1>
     <p id="heroDesc">Every clip below is real. No script, no actors — just us. Press play on any of them.</p>
     <div class="hero-buttons">
       <button class="btn btn-play" onclick="openModal(EPISODES[0])">▶ Play</button>
@@ -258,7 +262,7 @@
    to match what's actually happening in it.
    ============================================================ */
 
-const HER_NAME = "Babe";
+const HER_NAME = "Adi";
 document.getElementById('avatarInitial').textContent = HER_NAME.charAt(0).toUpperCase();
 
 // file: path to the video (relative — keep the /videos folder next to this html file)
@@ -266,19 +270,19 @@ document.getElementById('avatarInitial').textContent = HER_NAME.charAt(0).toUppe
 // duration: shown as a badge on the card
 // title / caption: fully editable — make these specific to each memory
 const EPISODES = [
-  { file:"clip01.mp4", thumb:"thumbs/clip01.jpg", duration:"2:43", title:"The Pilot Episode", caption:"I will always treasure everymoments I shared with you my love." },
+  { file:"clip01.mp4", thumb:"thumbs/clip01.jpg", duration:"2:43", title:"The Pilot Episode", caption:"I will always treasure every moments I shared with you my love." },
   { file:"clip02.mp4", thumb:"thumbs/clip02.jpg", duration:"0:46", title:"This is How Love Looks like", caption:"Just like bowling, you struck my heart and now I'm just inlove." },
   { file:"clip03.mp4", thumb:"thumbs/clip03.jpg", duration:"0:42", title:"All Time Favorite Estelitas", caption:"No plot, no plan — just a really good time with you." },
   { file:"clip04.mp4", thumb:"thumbs/clip04.jpg", duration:"2:52", title:"Basketball", caption:"Just an arcade game, but I am a champion because I have you." },
   { file:"clip05.mp4", thumb:"thumbs/clip05.jpg", duration:"0:09", title:"Blink and You'll Miss It", caption:"Short clip, huge smile. Worth the rewatch." },
-  { file:"clip06.mp4", thumb:"thumbs/clip06.jpg", duration:"0:41", title:"Your Smile", caption:"That smile will always be the smile I want to look at for the rest of my life. " },
+  { file:"clip06.mp4", thumb:"thumbs/clip06.jpg", duration:"0:41", title:"Your Smile", caption:"That smile will always be the smile I want to look at for the rest of my life." },
   { file:"clip07.mp4", thumb:"thumbs/clip07.jpg", duration:"0:06", title:"Lifestyle", caption:"Walking with you gives me peace." },
   { file:"clip08.mp4", thumb:"thumbs/clip08.jpg", duration:"0:14", title:"A Good Day", caption:"Proof that the small days are sometimes the best ones." },
   { file:"clip09.mp4", thumb:"thumbs/clip09.jpg", duration:"0:09", title:"Caught on Camera", caption:"I'm glad this one got recorded." },
   { file:"clip10.mp4", thumb:"thumbs/clip10.jpg", duration:"0:56", title:"Distance", caption:"It still makes me cry knowing that I'm far from you." },
   { file:"clip11.mp4", thumb:"thumbs/clip11.jpg", duration:"0:23", title:"A Night to Remember", caption:"Not a frontrow seat or a VVIP, but this night was memorable because I got to see Ben&Ben with my favorite person" },
   { file:"clip12.mp4", thumb:"thumbs/clip12.jpg", duration:"0:22", title:"Us being Kids", caption:"I love being silly with you." },
-  { file:"clip13.mp4", thumb:"thumbs/clip13.jpg", duration:"0:10", title:"Coffee Stain", caption:"A random morning when a coffee spilled on my  pants. I really love you Adi" },
+  { file:"clip13.mp4", thumb:"thumbs/clip13.jpg", duration:"0:10", title:"Coffee Stain", caption:"A random morning when a coffee spilled on my pants. I really love you Adi" },
   { file:"clip14.mp4", thumb:"thumbs/clip14.jpg", duration:"0:09", title:"Mundo", caption:"You are my world Adi." },
   { file:"clip15.mp4", thumb:"thumbs/clip15.jpg", duration:"0:26", title:"Pool Party", caption:"Having you as my partner is one of the greatest blessing." },
   { file:"clip16.mp4", thumb:"thumbs/clip16.jpg", duration:"0:34", title:"Stolen Footage", caption:"Just me recording you silently because I loved seeing your smile and hearing your voice." },
