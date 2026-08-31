@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OURFLIX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* ============================================================
+     EDIT ME: quick personalization knobs
+     ============================================================ */
+  :root{
+    --brand-red:#E50914;
+    --bg:#141414;
+    --bg-row:#181818;
+    --text:#ffffff;
+    --text-dim:#b3b3b3;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+    padding-bottom:60px;
+  }
+  h1,h2,.logo{ font-family:'Bebas Neue',sans-serif; letter-spacing:0.5px; }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 4%;
+    transition:background 0.3s ease;
+  }
+  .nav.scrolled{ background:var(--bg); box-shadow:0 2px 10px rgba(0,0,0,0.4); }
+  .nav-left{ display:flex; align-items:center; gap:28px; }
+  .logo{ color:var(--brand-red); font-size:32px; letter-spacing:1px; cursor:default; user-select:none; }
+  .nav-links{ display:flex; gap:20px; list-style:none; }
+  .nav-links li{ font-size:14px; color:var(--text-dim); cursor:pointer; transition:color 0.2s; }
+  .nav-links li:hover{ color:var(--text); }
+  .avatar{
+    width:32px; height:32px; border-radius:5px;
+    background:linear-gradient(135deg,var(--brand-red),#7a0a10);
+    display:flex; align-items:center; justify-content:center;
+    font-size:14px; font-weight:700;
+  }
+  @media (max-width:700px){ .nav-links{ display:none; } }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    height:88vh;
+    min-height:520px;
+    display:flex;
+    align-items:flex-end;
+    padding:0 4% 8%;
+    overflow:hidden;
+  }
+  .hero video{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    object-position:center 20%;
+    filter:brightness(0.55);
+  }
+  .hero-scrim{
+    position:absolute; inset:0;
+    background:
+      linear-gradient(180deg, rgba(20,20,20,0) 35%, var(--bg) 100%),
+      linear-gradient(90deg, rgba(20,20,20,0.9) 15%, rgba(20,20,20,0.15) 65%);
+  }
+  .hero-content{ position:relative; z-index:2; max-width:560px; }
+  .hero-badge{
+    display:inline-flex; align-items:center; gap:6px;
+    color:var(--text); font-size:13px; font-weight:600;
+    margin-bottom:14px; letter-spacing:0.3px;
+  }
+  .hero-badge .n{ color:var(--brand-red); font-family:'Bebas Neue',sans-serif; font-size:16px; }
+  .hero h1{ font-size:60px; line-height:1; margin-bottom:14px; }
+  .hero p{ color:var(--text); font-size:17px; line-height:1.5; margin-bottom:22px; max-width:480px; }
+  .hero-buttons{ display:flex; gap:12px; }
+  .btn{
+    border:none; border-radius:4px; padding:12px 26px;
+    font-size:16px; font-weight:700; cursor:pointer;
+    display:flex; align-items:center; gap:8px;
+    transition:opacity 0.2s, transform 0.1s;
+  }
+  .btn:active{ transform:scale(0.97); }
+  .btn-play{ background:#fff; color:#000; }
+  .btn-play:hover{ opacity:0.85; }
+  .btn-info{ background:rgba(109,109,110,0.7); color:#fff; }
+  .btn-info:hover{ background:rgba(109,109,110,0.5); }
+
+  /* ---------- ROWS ---------- */
+  .rows{ margin-top:-60px; position:relative; z-index:2; }
+  .row{ margin-bottom:34px; padding-left:4%; }
+  .row h2{ font-size:22px; font-weight:400; margin-bottom:10px; letter-spacing:0.3px; }
+  .row-track{
+    display:flex; gap:10px; overflow-x:auto; padding:10px 4% 24px 0;
+    scrollbar-width:none;
+  }
+  .row-track::-webkit-scrollbar{ display:none; }
+
+  .card{
+    flex:0 0 auto;
+    width:150px; height:250px;
+    border-radius:6px;
+    position:relative;
+    cursor:pointer;
+    overflow:hidden;
+    background:#222;
+    transition:transform 0.25s ease, box-shadow 0.25s ease, z-index 0s;
+  }
+  .card img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .card::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.85) 100%);
+  }
+  .card-title{
+    position:absolute; left:10px; right:10px; bottom:10px; z-index:2;
+    font-size:14px; font-weight:700; line-height:1.25;
+  }
+  .card-duration{
+    position:absolute; top:8px; right:8px; z-index:2;
+    background:rgba(0,0,0,0.55); color:#fff;
+    font-size:11px; font-weight:600;
+    padding:2px 6px; border-radius:3px;
+  }
+  .card-play{
+    position:absolute; top:8px; left:8px; z-index:2;
+    width:26px; height:26px; border-radius:50%;
+    background:rgba(255,255,255,0.15); backdrop-filter:blur(2px);
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; opacity:0; transition:opacity 0.2s;
+  }
+  .card:hover{
+    transform:scale(1.08);
+    box-shadow:0 12px 30px rgba(0,0,0,0.6);
+    z-index:5;
+  }
+  .card:hover .card-play{ opacity:1; }
+
+  /* ---------- MODAL / "PLAYER" ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,0.9);
+    display:none; align-items:center; justify-content:center;
+    z-index:1000; padding:20px;
+  }
+  .modal-overlay.active{ display:flex; }
+  .modal{
+    background:#000; width:100%; max-width:420px;
+    border-radius:8px; overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,0.7);
+    animation:pop 0.25s ease;
+  }
+  @keyframes pop{ from{ transform:scale(0.92); opacity:0; } to{ transform:scale(1); opacity:1; } }
+  .modal-screen{
+    position:relative;
+    background:#000;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .modal-screen video{
+    width:100%;
+    max-height:78vh;
+    display:block;
+    background:#000;
+  }
+  .modal-close{
+    position:absolute; top:10px; right:10px; z-index:3;
+    background:rgba(0,0,0,0.6); border:none; color:#fff;
+    width:32px; height:32px; border-radius:50%;
+    font-size:16px; cursor:pointer;
+  }
+  .modal-info{ padding:16px 18px 22px; background:#181818; }
+  .modal-info h3{ font-family:'Bebas Neue',sans-serif; font-size:22px; margin-bottom:6px; }
+  .match{ color:#46d369; font-weight:700; font-size:13px; margin-bottom:8px; }
+  .modal-info p{ color:var(--text-dim); font-size:13px; line-height:1.5; }
+
+  .footer-note{
+    text-align:center; color:var(--text-dim); font-size:12px;
+    margin-top:30px; padding:0 20px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-left">
+    <div class="logo">OURFLIX</div>
+    <ul class="nav-links">
+      <li>Home</li>
+    </ul>
+  </div>
+  <div class="avatar" id="avatarInitial">B</div>
+</nav>
+
+<header class="hero">
+  <video id="heroVideo" src="videos/clip01.mp4" autoplay muted loop playsinline></video>
+  <div class="hero-scrim"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="n">OURFLIX</span> ORIGINAL</div>
+    <h1 id="heroTitle">You being like a Mom</h1>
+    <p id="heroDesc">Every clip below is real. No script, no actors — just us. Press play on any of them.</p>
+    <div class="hero-buttons">
+      <button class="btn btn-play" onclick="openModal(EPISODES[0])">▶ Play</button>
+      <button class="btn btn-info" onclick="document.querySelector('.rows').scrollIntoView({behavior:'smooth'})">ⓘ More Info</button>
+    </div>
+  </div>
+</header>
+
+<main class="rows">
+  <section class="row">
+    <h2>Continue Watching for You</h2>
+    <div class="row-track" id="row-continue"></div>
+  </section>
+
+  <section class="row">
+    <h2>Trending in Our Relationship</h2>
+    <div class="row-track" id="row-trending"></div>
+  </section>
+
+  <section class="row">
+    <h2>Because You Loved "Us"</h2>
+    <div class="row-track" id="row-because"></div>
+  </section>
+
+  <section class="row">
+    <h2>More From Us</h2>
+    <div class="row-track" id="row-more"></div>
+  </section>
+</main>
+
+<p class="footer-note">This show is not available for anyone else to stream. Exclusive to you. 🍿❤️</p>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-screen">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <video id="modalVideo" controls playsinline></video>
+    </div>
+    <div class="modal-info">
+      <h3 id="modalTitle"></h3>
+      <div class="match">100% Match Made For You</div>
+      <p id="modalDesc"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   EDIT ME: change the name, and the title/caption for any clip
+   to match what's actually happening in it.
+   ============================================================ */
+
+const HER_NAME = "Babe";
+document.getElementById('avatarInitial').textContent = HER_NAME.charAt(0).toUpperCase();
+
+// file: path to the video (relative — keep the /videos folder next to this html file)
+// thumb: path to its poster image (in /thumbs)
+// duration: shown as a badge on the card
+// title / caption: fully editable — make these specific to each memory
+const EPISODES = [
+  { file:"clip01.mp4", thumb:"thumbs/clip01.jpg", duration:"2:43", title:"The Pilot Episode", caption:"I will always treasure everymoments I shared with you my love." },
+  { file:"clip02.mp4", thumb:"thumbs/clip02.jpg", duration:"0:46", title:"This is How Love Looks like", caption:"Just like bowling, you struck my heart and now I'm just inlove." },
+  { file:"clip03.mp4", thumb:"thumbs/clip03.jpg", duration:"0:42", title:"All Time Favorite Estelitas", caption:"No plot, no plan — just a really good time with you." },
+  { file:"clip04.mp4", thumb:"thumbs/clip04.jpg", duration:"2:52", title:"Basketball", caption:"Just an arcade game, but I am a champion because I have you." },
+  { file:"clip05.mp4", thumb:"thumbs/clip05.jpg", duration:"0:09", title:"Blink and You'll Miss It", caption:"Short clip, huge smile. Worth the rewatch." },
+  { file:"clip06.mp4", thumb:"thumbs/clip06.jpg", duration:"0:41", title:"Your Smile", caption:"That smile will always be the smile I want to look at for the rest of my life. " },
+  { file:"clip07.mp4", thumb:"thumbs/clip07.jpg", duration:"0:06", title:"Lifestyle", caption:"Walking with you gives me peace." },
+  { file:"clip08.mp4", thumb:"thumbs/clip08.jpg", duration:"0:14", title:"A Good Day", caption:"Proof that the small days are sometimes the best ones." },
+  { file:"clip09.mp4", thumb:"thumbs/clip09.jpg", duration:"0:09", title:"Caught on Camera", caption:"I'm glad this one got recorded." },
+  { file:"clip10.mp4", thumb:"thumbs/clip10.jpg", duration:"0:56", title:"Distance", caption:"It still makes me cry knowing that I'm far from you." },
+  { file:"clip11.mp4", thumb:"thumbs/clip11.jpg", duration:"0:23", title:"A Night to Remember", caption:"Not a frontrow seat or a VVIP, but this night was memorable because I got to see Ben&Ben with my favorite person" },
+  { file:"clip12.mp4", thumb:"thumbs/clip12.jpg", duration:"0:22", title:"Us being Kids", caption:"I love being silly with you." },
+  { file:"clip13.mp4", thumb:"thumbs/clip13.jpg", duration:"0:10", title:"Coffee Stain", caption:"A random morning when a coffee spilled on my  pants. I really love you Adi" },
+  { file:"clip14.mp4", thumb:"thumbs/clip14.jpg", duration:"0:09", title:"Mundo", caption:"You are my world Adi." },
+  { file:"clip15.mp4", thumb:"thumbs/clip15.jpg", duration:"0:26", title:"Pool Party", caption:"Having you as my partner is one of the greatest blessing." },
+  { file:"clip16.mp4", thumb:"thumbs/clip16.jpg", duration:"0:34", title:"Stolen Footage", caption:"Just me recording you silently because I loved seeing your smile and hearing your voice." },
+  { file:"clip17.mp4", thumb:"thumbs/clip17.jpg", duration:"0:16", title:"One More Time", caption:"I'd hit replay on this a hundred times." },
+  { file:"clip18.mp4", thumb:"thumbs/clip18.jpg", duration:"1:32", title:"Gifts", caption:"I hope that we both live a long life, let's celebrates all our birthdays together my Love, Iloveyou!" },
+];
+
+function buildCard(ep){
+  const card = document.createElement('div');
+  card.className = "card";
+  card.innerHTML = `
+    <img src="${ep.thumb}" alt="${ep.title}" loading="lazy">
+    <div class="card-duration">${ep.duration}</div>
+    <div class="card-play">▶</div>
+    <div class="card-title">${ep.title}</div>
+  `;
+  card.addEventListener('click', () => openModal(ep));
+  return card;
+}
+
+function renderRow(id, items){
+  const track = document.getElementById(id);
+  items.forEach(ep => track.appendChild(buildCard(ep)));
+}
+
+renderRow('row-continue', EPISODES.slice(1,5));
+renderRow('row-trending', EPISODES.slice(5,9));
+renderRow('row-because', EPISODES.slice(9,13));
+renderRow('row-more', EPISODES.slice(13,18));
+
+// ---------- Modal logic ----------
+const overlay = document.getElementById('modalOverlay');
+const modalVideo = document.getElementById('modalVideo');
+const modalTitle = document.getElementById('modalTitle');
+const modalDesc = document.getElementById('modalDesc');
+const heroVideo = document.getElementById('heroVideo');
+
+function openModal(ep){
+  heroVideo.pause();
+  modalTitle.textContent = ep.title;
+  modalDesc.textContent = ep.caption;
+  modalVideo.src = ep.file;
+  overlay.classList.add('active');
+  modalVideo.play().catch(()=>{});
+}
+
+function closeModal(){
+  overlay.classList.remove('active');
+  modalVideo.pause();
+  modalVideo.removeAttribute('src');
+  modalVideo.load();
+  heroVideo.play().catch(()=>{});
+}
+
+overlay.addEventListener('click', (e) => { if(e.target === overlay) closeModal(); });
+document.addEventListener('keydown', (e) => { if(e.key === "Escape") closeModal(); });
+
+// ---------- Nav background on scroll ----------
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+});
+</script>
+
+</body>
+</html>
